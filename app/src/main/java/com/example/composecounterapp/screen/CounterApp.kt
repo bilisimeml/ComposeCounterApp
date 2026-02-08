@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -67,6 +68,10 @@ fun CounterApp() {
         val startNumber = remember { mutableStateOf("") }
         val counter = remember { mutableIntStateOf(0) }
 
+        // snackbar için focusManager tanımlama. textfiled odağını kapatmak için
+        val focusManager = LocalFocusManager.current
+
+
         Column(
             modifier = Modifier.fillMaxSize()
                 .padding(contentPadding),
@@ -104,6 +109,7 @@ fun CounterApp() {
                     shape = MaterialTheme.shapes.small,
                     onClick = {
                         counter.intValue++
+                        focusManager.clearFocus() // textfield odağını kapatmak için
                     }
                 ) {
                     Text(text = "Artır")
@@ -123,6 +129,7 @@ fun CounterApp() {
                             }
                         }else{
                             counter.intValue--
+                            focusManager.clearFocus()
                         }
                     }
                 ) {
@@ -133,6 +140,7 @@ fun CounterApp() {
                     onClick = {
                         counter.intValue = 0
                         startNumber.value = ""
+                        focusManager.clearFocus()
                     }
                 ) {
                     Text(text = "Sıfırla")
